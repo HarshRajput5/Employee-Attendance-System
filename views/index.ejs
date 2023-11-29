@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Display MongoDB Data</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .navbar-light .navbar-nav .nav-link {
+            color: white;
+        }
+
+        .navbar-light .navbar-brand {
+            color: white;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: aqua;
+        }
+
+        .navbar-light .navbar-brand:hover {
+            color: aqua;
+        }
+
+        .navbar-light .navbar-toggler {
+            border-color: white;
+        }
+    </style>
+    
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/employees" >Attendance</a>
+                    <a class="nav-link" href="/index">Date</a>
+              </div>
+            </div>
+        </div>
+    </nav>
+    <br>
+
+    <h1>MongoDB Data</h1>
+    <input type="date" class="form-control" id="date" name="date" required>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Pin Code</th>
+                <th>Date</th>
+                <th>Attendance</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="attendanceData">
+            <!-- Data will be populated here -->
+            <% employees.forEach((item,index)=> { %>
+                <tr>
+                    <td id="content">
+                        <%= JSON.stringify(item.id) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.name) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.mobile) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.email) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.department) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.address) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.city) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.pin_code) %>
+                    </td>
+                    <td>
+                        <%= JSON.stringify(item.date_of_joining) %>
+                    </td>
+                    <td>
+                        <button id="name" onclick="sendName('<%= JSON.stringify(item.name) %>')">
+                            <h5>Present</h5>
+                        </button>
+                    </td>
+                    <td>
+                        <button id="deleteButton" onclick="sendData('<%= JSON.stringify(item.id) %>')">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </td>
+
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+    
+
+    <script>
+
+        async function sendData(dataId1) {
+            // console.log(dataId1);
+            const Id = String(dataId1);
+            let dataId = Id;
+            const b = '/api/delete-data/';
+            dataId = dataId.substring(1, dataId.length - 1);
+            // const c="${b}${a}";
+            // console.log(b+dataId);
+            // const a = dataId;
+            // console.log(`/api/delete-data/${dataId}`);
+            const string = b + dataId;
+
+            try {
+                const response = await fetch(string, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+
+                });
+                const result = response.json();
+                console.log(result); // Handle the response accordingly
+                // Reload the page after successful deletion
+                window.location.reload();
+
+            }
+            catch (error) {
+                console.error('Error:', error);
+            }
+
+        }
+
+
+        async function sendName(dataId1) {
+            const Id = String(dataId1);
+            let dataId = Id;
+            const b = '/api/attendance/';
+            dataId = dataId.substring(1, dataId.length - 1);
+            const string = b + dataId;
+            console.log(string);
+
+            try {
+
+                // Assuming your date input has an ID 'dateInput'
+                const dateValue = document.getElementById('date').value; // Get the date value from the input field
+
+                const requestBody = {
+                    date: dateValue // Include the date in the request payload
+                    // Other data fields can also be included here if needed
+                };
+
+                const response = await fetch(string, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody) // Convert the object to JSON string and include in the request body
+    
+                });
+                const result = await response.json();
+                console.log(result); // Handle the response accordingly
+                // Reload the page after successful deletion
+                // window.location.reload();
+
+            }
+            catch (error) {
+                console.error('Error:', error);
+            }
+
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>
