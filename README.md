@@ -10,8 +10,9 @@ Below images of my website.
 
 -In this page admin can delete employoees data and take attendace by choosing specifice date.
 
-![Screenshot 2023-11-29 112520](https://github.com/HarshRajput5/Employee-Attendance-System/assets/121711339/949a929b-a99a-498f-90b5-1622e4e42875)
+![Screenshot 2023-12-01 145700](https://github.com/HarshRajput5/Employee-Attendance-System/assets/121711339/31c9cae2-5052-4ece-b976-55451286d599)
 
 -In this page admin can find present employees at specifice date.
 
-![Screenshot 2023-11-29 112628](https://github.com/HarshRajput5/Employee-Attendance-System/assets/121711339/c910662e-da59-46c5-a3e6-1beccf5c47bd)
+![Screenshot 2023-12-01 145937](https://github.com/HarshRajput5/Employee-Attendance-System/assets/121711339/6dd98b9b-f7f9-442f-a089-a1858c055049)
+
